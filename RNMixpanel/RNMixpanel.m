@@ -129,6 +129,11 @@ RCT_EXPORT_METHOD(increment:(NSString *)property count:(nonnull NSNumber *)count
     [mixpanel.people increment:property by:count];
 }
 
+// addPushDeviceStringToken
+RCT_EXPORT_METHOD(addPushDeviceStringToken:(NSString *)deviceToken) {
+    [mixpanel.people union:@{@"$ios_devices": @[deviceToken]}];
+}
+
 // reset
 RCT_EXPORT_METHOD(reset) {
     [mixpanel reset];
