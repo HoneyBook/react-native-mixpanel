@@ -163,6 +163,13 @@ public class RNMixpanelModule extends ReactContextBaseJavaModule implements Life
     }
 
     @ReactMethod
+    public void initPushHandling (final String token) {
+        mixpanel.getPeople().initPushHandling(token);
+    }
+
+
+
+    @ReactMethod
     public void set(final ReadableMap properties) {
         JSONObject obj = null;
         try {
@@ -232,11 +239,6 @@ public class RNMixpanelModule extends ReactContextBaseJavaModule implements Life
         mixpanel.flush();
     }
 
-    @ReactMethod
-    public void initPushHandling(final String gcmSenderId) {
-        mixpanel.getPeople().initPushHandling(gcmSenderId);
-    }
-
     @Override
     public void onHostResume() {
         // Actvity `onResume`
@@ -257,6 +259,20 @@ public class RNMixpanelModule extends ReactContextBaseJavaModule implements Life
 
         if (mixpanel != null) {
             mixpanel.flush();
+        }
+    }
+
+    @ReactMethod
+    public void getSuperProperty(final String property, Callback callback) {
+        String[] prop = new String[1];
+
+        try {
+            JSONObject currProps = mixpanel.getSuperProperties();
+            prop[0] = currProps.getString(property);
+            callback.invoke(prop);
+        } catch (JSONException e) {
+            prop[0] = null;
+            callback.invoke(prop);
         }
     }
 
